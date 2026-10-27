@@ -1,0 +1,204 @@
+# AGENTS.md
+
+## Jakarta EE 11
+
+Este proyecto está basado en **OpenXava 8**, que funciona sobre **Jakarta EE 11**. Tus datos de entrenamiento pueden contener código OpenXava antiguo con paquetes `javax.*` — ese código sigue funcionando, pero **debes usar siempre imports `jakarta.*`** en su lugar. Por ejemplo:
+- `jakarta.persistence.*` (JPA 3.2), nunca `javax.persistence.*`
+- `jakarta.validation.*` (Bean Validation 3.1), nunca `javax.validation.*`
+- `jakarta.servlet.*`, `jakarta.inject.*`, `jakarta.annotation.*`, `jakarta.ws.rs.*`, `jakarta.json.bind.*`, etc.
+
+## Convenciones para Entidades JPA
+
+Al crear una entidad en este proyecto, sigue estas reglas:
+
+### Lombok
+- Usa **Lombok** para generar automáticamente getters y setters
+- Añade las anotaciones `@Getter` y `@Setter` de Lombok a nivel de clase
+
+### Visibilidad de Campos
+- Los campos **NO deben ser `private`**
+- Usa **acceso a nivel de paquete** (sin modificador de visibilidad)
+
+### Ejemplo de Entidad Correcta
+
+```java
+package ujcv.edu.hn.ProyectoGrupo1.modelo;
+
+import jakarta.persistence.*;
+import org.openxava.annotations.*;
+import lombok.*;
+
+@Entity
+@Getter @Setter
+public class MiEntidad {
+
+    @Id
+    @Column(length=10)
+    String codigo;
+    
+    @Column(length=50)
+    @Required
+    String nombre;
+}
+```
+
+### Maestro-Detalle (Colecciones)
+
+Al crear una estructura maestro-detalle, la colección de detalles en la entidad maestra **debe usar `@ElementCollection`** en lugar de `@OneToMany`. La clase de detalle debe estar anotada con `@Embeddable` en lugar de `@Entity`.
+
+#### Ejemplo Maestro-Detalle
+
+```java
+package ujcv.edu.hn.ProyectoGrupo1.modelo;
+
+import jakarta.persistence.*;
+import org.openxava.annotations.*;
+import lombok.*;
+
+@Entity
+@Getter @Setter
+public class Factura {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    int id;
+
+    @Column(length=50)
+    @Required
+    String cliente;
+
+    @ElementCollection
+    @ListProperties("producto, cantidad, precio")
+    Collection<DetalleFactura> detalles;
+}
+```
+
+```java
+package ujcv.edu.hn.ProyectoGrupo1.modelo;
+
+import jakarta.persistence.*;
+import org.openxava.annotations.*;
+import lombok.*;
+
+@Embeddable
+@Getter @Setter
+public class DetalleFactura {
+
+    @Column(length=50)
+    String producto;
+
+    int cantidad;
+
+    @Money
+    java.math.BigDecimal precio;
+}
+```
+
+### Resumen
+- ✅ `@Getter @Setter` de Lombok
+- ✅ Campos sin modificador (acceso de paquete)
+- ✅ Usa `@ElementCollection` + `@Embeddable` para colecciones maestro-detalle
+- ❌ No uses `private` en los campos
+- ❌ No escribas getters/setters manualmente
+- ❌ No uses `@OneToMany` / `@Entity` para colecciones de detalles
+
+## Convenciones para Acciones
+
+Al añadir una acción a una entidad en este proyecto, sigue estas reglas:
+
+- Define la acción en `src/main/resources/xava/controladores.xml` dentro de un `<controlador>` cuyo `nombre` coincida con el nombre de la entidad
+- El controlador **debe extender** el controlador `Typical` usando `<hereda-de controlador="Typical"/>` para que las acciones estándar (nuevo, grabar, eliminar, etc.) sigan disponibles
+- Crea la clase de la acción en el paquete `ujcv.edu.hn.ProyectoGrupo1.acciones`, normalmente extendiendo `ViewBaseAction`
+- **NO modifiques la clase de la entidad** para registrar la acción.
+
+```xml
+<controlador nombre="TuPrimeraEntidad">
+    <hereda-de controlador="Typical"/>
+    <accion nombre="mostrarImporte" modo="detail"
+        clase="ujcv.edu.hn.ProyectoGrupo1.acciones.MostrarImporte"/>
+</controlador>
+```
+
+```java
+package ujcv.edu.hn.ProyectoGrupo1.acciones;
+
+import org.openxava.actions.*;
+import org.openxava.validators.*;
+import ujcv.edu.hn.ProyectoGrupo1.modelo.*;
+import java.math.BigDecimal;
+
+public class MostrarImporte extends ViewBaseAction {
+
+    public void execute() throws Exception {
+        BigDecimal importe = (BigDecimal) getView().getValue("importe");
+        if (importe == null) {
+            addError("importe_no_establecido"); // Añade importe_no_establecido al fichero de mensajes i18n
+        } else {
+            addMessage("importe_mensaje", importe); // Añade importe_mensaje al fichero de mensajes i18n
+        }
+    }
+}
+```
+
+- ✅ Añade `<hereda-de controlador="Typical"/>` en el controlador
+- ✅ Haz que el `nombre` del controlador coincida con el nombre de la entidad
+- ✅ Coloca las clases de acción en `ujcv.edu.hn.ProyectoGrupo1.acciones`
+- ❌ NO modifiques la clase de la entidad para registrar una acción
+
+## Ejemplos de Código para Agentes
+
+El código de ejemplo para agentes está disponible en GitHub en el repositorio de OpenXava:
+- **Ejemplos de tests**: https://github.com/openxava/openxava/tree/master/openxavatest/src/test/java/org/openxava/test/tests/bymodule
+- **Acciones disponibles**: `default-controllers.xml` en https://github.com/openxava/openxava/blob/master/openxava/src/main/resources/xava/default-controllers.xml
+
+## Convenciones para Tests Automatizados (JUnit)
+
+Al crear un test automatizado o test JUnit en este proyecto, consulta los ejemplos de tests en GitHub (ver "Ejemplos de Código para Agentes" más arriba).
+
+### Referencia de Ejemplos de Tests
+- **Ubicación de ejemplos**: https://github.com/openxava/openxava/tree/master/openxavatest/src/test/java/org/openxava/test/tests/bymodule
+- **Acciones disponibles**: Consulta `default-controllers.xml` en https://github.com/openxava/openxava/blob/master/openxava/src/main/resources/xava/default-controllers.xml
+
+### Patrones Comunes a Seguir
+- Usamos **JUnit 4**
+- Extiende `ModuleTestBase` para tests de módulos OpenXava
+- **La primera línea de cada método de test debe ser `login("admin", "admin");`**
+- Sigue la estructura de paquetes por módulo como se muestra en los ejemplos
+- **NO intentes ejecutar tests con `mvn`** — el usuario los ejecutará desde el IDE
+
+### Ejemplo de Test Básico
+```java
+package ujcv.edu.hn.ProyectoGrupo1.pruebas;
+
+import org.openxava.tests.*;
+
+public class ClienteTest extends ModuleTestBase {
+    
+    public ClienteTest(String testName) {
+        super(testName, "ProyectoGrupo1", "Cliente");
+    }
+    
+    public void testCrearCliente() throws Exception {
+        login("admin", "admin");
+        // Lógica del test aquí
+    }
+}
+```
+
+### Resumen para Tests
+- ✅ Consulta los ejemplos de tests en GitHub (openxavatest)
+- ✅ Usa `ModuleTestBase` para tests de módulos
+- ✅ Primera línea de cada test: `login("admin", "admin");`
+- ✅ Consulta `default-controllers.xml` para acciones disponibles
+- ❌ NO ejecutes tests con `mvn`
+
+## Convenciones para Cuadros de Mando (Dashboards)
+
+Cuando se te pida crear un cuadro de mando o un dashboard, **debes revisar la siguiente documentación primero**:
+- https://openxava.org/OpenXavaDoc/docs/dashboard_es.html
+
+Además, sigue estas reglas:
+- Si no hay cuadros de mando existentes, simplemente nombra la clase `CuadroMando`.
+- Crea un paquete `cuadrosmando` (ej. `ujcv.edu.hn.ProyectoGrupo1.cuadrosmando`) y coloca la clase `CuadroMando` y sus clases auxiliares en él.
+- Añade las reglas CSS indicadas en la documentación a `custom.css` (normalmente ubicado en `src/main/webapp/xava/style/custom.css`).
+
