@@ -15,7 +15,10 @@ public class RolesModulesHelperProvider extends ModulesHelperProvider {
     // A medida que se creen mas modulos, se agregan aqui.
     private static final Map<String, String> ACCESO = Map.of(
             "Usuario", "accesoSeguridad",
-            "Rol", "accesoSeguridad"
+            "Rol", "accesoSeguridad",
+            "Autoparte", "accesoInventario",
+            "Categoria", "accesoInventario",
+            "Ubicacion", "accesoInventario"
     );
 
     @Override
@@ -49,14 +52,14 @@ public class RolesModulesHelperProvider extends ModulesHelperProvider {
 
             Rol r = roles.get(0);
             Set<String> s = new HashSet<>();
-            if (r.isAccesoSeguridad())  s.add("accesoSeguridad");
+            if (r.isAccesoSeguridad()) s.add("accesoSeguridad");
             if (r.isAccesoInventario()) s.add("accesoInventario");
-            if (r.isAccesoLotes())      s.add("accesoLotes");
-            if (r.isAccesoPrecios())    s.add("accesoPrecios");
-            if (r.isAccesoVentas())     s.add("accesoVentas");
-            if (r.isAccesoClientes())   s.add("accesoClientes");
-            if (r.isAccesoAnalitica())  s.add("accesoAnalitica");
-            if (r.isAccesoBitacora())   s.add("accesoBitacora");
+            if (r.isAccesoLotes())     s.add("accesoLotes");
+            if (r.isAccesoPrecios())   s.add("accesoPrecios");
+            if (r.isAccesoVentas())    s.add("accesoVentas");
+            if (r.isAccesoClientes())  s.add("accesoClientes");
+            if (r.isAccesoAnalitica()) s.add("accesoAnalitica");
+            if (r.isAccesoBitacora())  s.add("accesoBitacora");
             return s;
         } finally {
             em.close();
