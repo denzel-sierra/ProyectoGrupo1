@@ -40,6 +40,12 @@ public class RolesModulesHelperProvider extends ModulesHelperProvider {
         return resultado;
     }
 
+    /** Desactiva el chat con IA y su barra lateral en toda la aplicacion. */
+    @Override
+    public boolean isChatAvailable() {
+        return false;
+    }
+
     /** @return las casillas marcadas en el rol del usuario, o null si el usuario no esta en la tabla */
     private Set<String> casillasDe(String nombreUsuario) {
         EntityManager em = XPersistence.createManager();
