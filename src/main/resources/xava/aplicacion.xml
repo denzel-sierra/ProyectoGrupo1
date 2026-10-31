@@ -13,10 +13,14 @@
 	</modulo-defecto>
 
 	<modulo nombre="ConsultaAutoparte">
+		<var-entorno nombre="XAVA_LIST_ACTION" valor=""/>
 		<modelo nombre="Autoparte"/>
 		<tab nombre="Consulta"/>
 		<controlador nombre="Print"/>
+		<controlador nombre="ListOnly"/>
+		<controlador-modo nombre="Void"/>
 	</modulo>
+
 	
 	<!--
 	Podemos definir módulos adicionales, por ejemplo: 	

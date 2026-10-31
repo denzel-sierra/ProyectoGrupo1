@@ -25,7 +25,7 @@ import ujcv.edu.hn.ProyectoGrupo1.validadores.ValidadorAutoparte;
 )
 @View(members =
         "Identificacion [ sku, estado, creadoEn ];" +
-                "Datos de la Autoparte [" +
+                "DatosDeLaAutoparte [" +
                 "   descripcion;" +
                 "   marca, modelo, anio;" +
                 "   categoria, condicion;" +
