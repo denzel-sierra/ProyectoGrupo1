@@ -19,7 +19,7 @@ Proyecto académico de **Ingeniería de Software I** — Universidad José Cecil
 
 ## Tecnologías
 
-- **Backend:** Python + Django
+- **Backend:** OpenXava
 - **Base de datos:** PostgreSQL
-- **Frontend:** HTML5, CSS3, JavaScript, Bootstrap
+- **Frontend:** HTML5, CSS3, JavaScript
 - **Control de versiones:** Git + GitHub
