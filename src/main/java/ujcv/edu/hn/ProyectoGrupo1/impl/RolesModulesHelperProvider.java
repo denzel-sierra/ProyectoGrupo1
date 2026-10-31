@@ -13,12 +13,13 @@ public class RolesModulesHelperProvider extends ModulesHelperProvider {
 
     // Modulo (nombre de la entidad) -> casilla del rol que lo habilita.
     // A medida que se creen mas modulos, se agregan aqui.
-    private static final Map<String, String> ACCESO = Map.of(
-            "Usuario", "accesoSeguridad",
-            "Rol", "accesoSeguridad",
-            "Autoparte", "accesoInventario",
-            "Categoria", "accesoInventario",
-            "Ubicacion", "accesoInventario"
+    private static final Map<String, String> ACCESO = Map.ofEntries(
+            Map.entry("Usuario", "accesoSeguridad"),
+            Map.entry("Rol", "accesoSeguridad"),
+            Map.entry("Autoparte", "accesoInventario"),
+            Map.entry("Categoria", "accesoInventario"),
+            Map.entry("Ubicacion", "accesoInventario")
+            // Agregar aqui cada modulo nuevo, separado por coma
     );
 
     @Override
