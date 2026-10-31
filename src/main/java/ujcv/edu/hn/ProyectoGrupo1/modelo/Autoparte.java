@@ -35,7 +35,12 @@ import ujcv.edu.hn.ProyectoGrupo1.validadores.ValidadorAutoparte;
                 "   costoProrrateado;" +
                 "]"
 )
-@Tab(properties = "sku, descripcion, marca, modelo, anio, condicion, estado, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante, costoProrrateado")
+@Tabs({
+        @Tab(properties = "sku, descripcion, marca, modelo, anio, condicion, estado, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante, costoProrrateado"),
+        @Tab(name = "Consulta",
+                properties = "sku, descripcion, marca, modelo, anio, condicion, estado, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante",
+                defaultOrder = "${sku} asc")
+})
 public class Autoparte {
 
     @Id

@@ -18,7 +18,9 @@ public class RolesModulesHelperProvider extends ModulesHelperProvider {
             "Rol", "accesoSeguridad",
             "Autoparte", "accesoInventario",
             "Categoria", "accesoInventario",
-            "Ubicacion", "accesoInventario"
+            "Ubicacion", "accesoInventario",
+            "Ubicacion", "accesoInventario",
+            "ConsultaAutoparte", "accesoVentas"
     );
 
     @Override

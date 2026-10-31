@@ -11,6 +11,12 @@
 	<modulo-defecto>		  
 		<controlador nombre="Typical"/>		
 	</modulo-defecto>
+
+	<modulo nombre="ConsultaAutoparte">
+		<modelo nombre="Autoparte"/>
+		<tab nombre="Consulta"/>
+		<controlador nombre="Print"/>
+	</modulo>
 	
 	<!--
 	Podemos definir módulos adicionales, por ejemplo: 	
