@@ -72,7 +72,7 @@ public class Autoparte {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
-    @ReadOnly
+    @Required(message = "Seleccione un estado")
     EstadoAutoparte estado = EstadoAutoparte.Disponible;
 
     @Column(name = "costo_prorrateado", precision = 10, scale = 2)
