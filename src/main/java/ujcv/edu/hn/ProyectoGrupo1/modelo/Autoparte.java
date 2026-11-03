@@ -25,17 +25,20 @@ import ujcv.edu.hn.ProyectoGrupo1.validadores.ValidadorAutoparte;
 )
 @View(members =
         "Identificacion [ sku, estado, creadoEn ];" +
-                "Datos de la Autoparte [" +
+                "DatosDeLaAutoparte [" +
                 "   descripcion;" +
                 "   marca, modelo, anio;" +
                 "   categoria, condicion;" +
                 "];" +
                 "Almacenamiento [" +
                 "   ubicacion;" +
-                "   costoProrrateado;" +
+                "   costoProrrateado, precioBase;" +
                 "]"
 )
+
+
 @Tab(properties = "sku, descripcion, marca, modelo, anio, condicion, estado, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante, costoProrrateado")
+
 public class Autoparte {
 
     @Id
@@ -80,6 +83,10 @@ public class Autoparte {
     @DecimalMin(value = "0.00", message = "El costo debe ser un numero positivo")
     @Money
     BigDecimal costoProrrateado = BigDecimal.ZERO;
+
+    @Column(name = "precio_base", precision = 10, scale = 2)
+    @Money
+    BigDecimal precioBase = BigDecimal.ZERO;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "categoria_id", nullable = false)

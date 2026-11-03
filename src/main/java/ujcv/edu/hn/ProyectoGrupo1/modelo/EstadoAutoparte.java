@@ -4,5 +4,5 @@ public enum EstadoAutoparte {
     Disponible,
     Reservada,
     Vendida,
-    Dañada
+    vendido, Dañada
 }
