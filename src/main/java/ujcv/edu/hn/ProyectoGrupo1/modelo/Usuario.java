@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.mindrot.jbcrypt.BCrypt;
 import org.openxava.annotations.*;
+import org.openxava.calculators.TrueCalculator;
 import ujcv.edu.hn.ProyectoGrupo1.validadores.ValidadorUsuarioUnico;
 
 @Entity
@@ -19,6 +20,7 @@ import ujcv.edu.hn.ProyectoGrupo1.validadores.ValidadorUsuarioUnico;
         @PropertyValue(name = "correo"),
         @PropertyValue(name = "nombreUsuario")
 })
+@Tab(properties = "nombreUsuario, nombre, correo, rol.nombre, activo, creadoEn")
 public class Usuario {
 
     @Id
@@ -57,9 +59,11 @@ public class Usuario {
     @Required
     private Rol rol;
 
+    @DefaultValueCalculator(TrueCalculator.class)
     private boolean activo = true;
 
     @Column(name = "creado_en", updatable = false)
+    @Hidden
     private LocalDateTime creadoEn;
 
     @PrePersist

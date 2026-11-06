@@ -31,5 +31,12 @@ https://github.com/openxava/openxava/blob/master/openxavatest/src/main/resources
                 clase="acciones.CrearProfesor"/>        
     </controlador>
     -->
+
+    <controlador nombre="PrecioBase">
+        <hereda-de controlador="Typical"/>
+        <accion nombre="save" modo="detail" por-defecto="si-posible"
+                icono="content-save" atajo-de-teclado="Control S"
+                clase="ujcv.edu.hn.ProyectoGrupo1.acciones.GuardarPrecioBase"/>
+    </controlador>
     
 </controladores>

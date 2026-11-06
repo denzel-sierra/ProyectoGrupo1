@@ -1,6 +1,7 @@
 package ujcv.edu.hn.ProyectoGrupo1.validadores;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.FlushModeType;
 import lombok.Getter;
 import lombok.Setter;
 import org.openxava.jpa.XPersistence;
@@ -33,6 +34,7 @@ public class ValidadorUsuarioUnico implements IValidator {
                         Long.class)
                 .setParameter("valor", valor.trim().toLowerCase())
                 .setParameter("id", idActual)
+                .setFlushMode(FlushModeType.COMMIT)
                 .getSingleResult();
         return cantidad > 0;
     }
