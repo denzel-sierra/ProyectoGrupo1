@@ -14,23 +14,24 @@ https://github.com/openxava/openxava/blob/master/openxavatest/src/main/resources
 -->
 
 <controladores>
-    
-    <!-- Variable de entorno: 
+
+    <!-- Variable de entorno:
     <var-entorno nombre="ProyectoGrupo1_ANYO_DEFECTO" valor="2015"/>
     -->
-    
+
     <!-- Objeto de sesión:
-    <Objeto nombre="ProyectoGrupo1_anyoActivo" clase="java.lang.Integer" valor="2015" 
+    <Objeto nombre="ProyectoGrupo1_anyoActivo" clase="java.lang.Integer" valor="2015"
             ambito="global"/>
     -->
-    
+
     <!-- Controlador:
     <controlador nombre="Profesor">
         <hereda-de controlador="Typical"/>
-        <accion nombre="new" icono="plus-box-multiple" atajo-de-teclado="Control N" 
-                clase="acciones.CrearProfesor"/>        
+        <accion nombre="new" icono="plus-box-multiple" atajo-de-teclado="Control N"
+                clase="acciones.CrearProfesor"/>
     </controlador>
     -->
+
 
     <controlador nombre="PrecioBase">
         <hereda-de controlador="Typical"/>
@@ -38,5 +39,5 @@ https://github.com/openxava/openxava/blob/master/openxavatest/src/main/resources
                 icono="content-save" atajo-de-teclado="Control S"
                 clase="ujcv.edu.hn.ProyectoGrupo1.acciones.GuardarPrecioBase"/>
     </controlador>
-    
+
 </controladores>
