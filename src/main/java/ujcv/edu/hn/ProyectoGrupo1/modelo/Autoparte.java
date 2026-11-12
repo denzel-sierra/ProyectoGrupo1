@@ -38,7 +38,7 @@ import ujcv.edu.hn.ProyectoGrupo1.validadores.ValidadorAutoparte;
 
 
 @Tab(properties = "sku, descripcion, marca, modelo, anio, condicion, estado, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante, costoProrrateado")
-@View(name="Simple", members = "sku, descripcion, precioBase")
+
 public class Autoparte {
 
     @Id

@@ -19,9 +19,12 @@ public class RolesModulesHelperProvider extends ModulesHelperProvider {
             Map.entry("Autoparte", "accesoInventario"),
             Map.entry("Categoria", "accesoInventario"),
             Map.entry("Ubicacion", "accesoInventario"),
+            Map.entry("Lote", "accesoLotes"),
+            Map.entry("Cliente", "accesoClientes"),
             Map.entry("Bitacora", "accesoBitacora"),
-            Map.entry("PrecioBase", "accesoPrecios")
-            // Agregar aqui cada modulo nuevo, separado por coma
+            Map.entry("PrecioBase", "accesoPrecios"),
+            Map.entry("Descuento", "accesoVentas"),
+            Map.entry("Factura", "accesoVentas")
     );
 
     @Override
