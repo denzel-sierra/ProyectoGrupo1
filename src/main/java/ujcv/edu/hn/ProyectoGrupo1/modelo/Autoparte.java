@@ -32,13 +32,10 @@ import ujcv.edu.hn.ProyectoGrupo1.validadores.ValidadorAutoparte;
                 "];" +
                 "Almacenamiento [" +
                 "   ubicacion;" +
-                "   costoProrrateado, precioBase;" +
+                "   lote, costoProrrateado, precioBase;" +
                 "]"
 )
-
-
-@Tab(properties = "sku, descripcion, marca, modelo, anio, condicion, estado, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante, costoProrrateado")
-
+@Tab(properties = "sku, descripcion, marca, modelo, anio, condicion, estado, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante, lote.codigo, costoProrrateado, precioBase")
 public class Autoparte {
 
     @Id
@@ -99,6 +96,11 @@ public class Autoparte {
     @DescriptionsList(descriptionProperties = "ubicacionCompleta")
     @Required(message = "Ingrese al menos la zona")
     Ubicacion ubicacion;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "lote_id", nullable = true)
+    @DescriptionsList(descriptionProperties = "codigo, subastaOrigen")
+    Lote lote;
 
     @Column(name = "creado_en", updatable = false)
     @ReadOnly
