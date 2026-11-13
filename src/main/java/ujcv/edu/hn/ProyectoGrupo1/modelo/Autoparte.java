@@ -24,7 +24,7 @@ import ujcv.edu.hn.ProyectoGrupo1.validadores.ValidadorAutoparte;
         }
 )
 @View(members =
-        "Identificacion [ sku, estado, creadoEn ];" +
+        "Identificacion [ sku, estado, fechaVenta, creadoEn ];" +
                 "DatosDeLaAutoparte [" +
                 "   descripcion;" +
                 "   marca, modelo, anio;" +
@@ -38,7 +38,7 @@ import ujcv.edu.hn.ProyectoGrupo1.validadores.ValidadorAutoparte;
 @Tabs({
         @Tab(properties = "sku, descripcion, marca, modelo, anio, condicion, estado, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante, lote.codigo, costoProrrateado, precioBase"),
         @Tab(name = "Consulta",
-                properties = "sku, descripcion, marca, modelo, anio, condicion, estado, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante",
+                properties = "sku, descripcion, marca, modelo, anio, condicion, estado, disponibilidad, fechaVenta, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante, ubicacion.nivel",
                 defaultOrder = "${sku} asc")
 })
 public class Autoparte {
@@ -111,11 +111,25 @@ public class Autoparte {
     @ReadOnly
     LocalDateTime creadoEn;
 
+    // HU-04: fecha en que la pieza paso a Vendida (se llena sola, ver antesDeActualizar)
+    @Column(name = "fecha_venta")
+    @ReadOnly
+    LocalDateTime fechaVenta;
+
+    // HU-04 CA-02: una pieza que no esta Disponible se muestra como "No disponible"
+    @Depends("estado")
+    public String getDisponibilidad() {
+        return estado == EstadoAutoparte.Disponible ? "Disponible" : "No disponible";
+    }
+
     @PrePersist
     void antesDeCrear() {
         creadoEn = LocalDateTime.now();
         if (estado == null) {
             estado = EstadoAutoparte.Disponible;
+        }
+        if (estado == EstadoAutoparte.Vendida && fechaVenta == null) {
+            fechaVenta = LocalDateTime.now();
         }
         if (sku == null || sku.isBlank()) {
             String prefijo = "AUT";
@@ -127,6 +141,19 @@ public class Autoparte {
                     .getSingleResult();
             long consecutivo = (conteo != null ? conteo : 0L) + 1L;
             sku = String.format("%s-%d-%04d", prefijo, (anio != null ? anio : 0), consecutivo);
+        }
+    }
+
+    // HU-04: al pasar a Vendida se guarda la fecha; si la pieza vuelve a otro estado
+    // (por ejemplo, se anula la factura) la fecha se borra.
+    @PreUpdate
+    void antesDeActualizar() {
+        if (estado == EstadoAutoparte.Vendida) {
+            if (fechaVenta == null) {
+                fechaVenta = LocalDateTime.now();
+            }
+        } else {
+            fechaVenta = null;
         }
     }
 }
