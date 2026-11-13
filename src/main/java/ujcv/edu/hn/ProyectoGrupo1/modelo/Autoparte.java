@@ -38,7 +38,7 @@ import ujcv.edu.hn.ProyectoGrupo1.validadores.ValidadorAutoparte;
 @Tabs({
         @Tab(properties = "sku, descripcion, marca, modelo, anio, condicion, estado, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante, lote.codigo, costoProrrateado, precioBase"),
         @Tab(name = "Consulta",
-                properties = "sku, descripcion, marca, modelo, anio, condicion, estado, disponibilidad, fechaVenta, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante, ubicacion.nivel",
+                properties = "sku, descripcion, marca, modelo, anio, condicion, estado, disponibilidad, fechaVenta, precioVenta, avisoPrecio, categoria.nombre, ubicacion.zona, ubicacion.pasillo, ubicacion.estante, ubicacion.nivel",
                 defaultOrder = "${sku} asc")
 })
 public class Autoparte {
@@ -120,6 +120,24 @@ public class Autoparte {
     @Depends("estado")
     public String getDisponibilidad() {
         return estado == EstadoAutoparte.Disponible ? "Disponible" : "No disponible";
+    }
+
+    // HU-06 CA-01: precio de venta vigente (el precio base que aplica el catalogo de precios).
+    // Solo se muestra; el vendedor no puede modificarlo.
+    @Money
+    @Depends("precioBase")
+    public BigDecimal getPrecioVenta() {
+        return tienePrecio() ? precioBase : null;
+    }
+
+    // HU-06 CA-02: alerta cuando la pieza no tiene precio base asignado
+    @Depends("precioBase")
+    public String getAvisoPrecio() {
+        return tienePrecio() ? "" : "Sin precio asignado: consulte al administrador";
+    }
+
+    private boolean tienePrecio() {
+        return precioBase != null && precioBase.compareTo(BigDecimal.ZERO) > 0;
     }
 
     @PrePersist
