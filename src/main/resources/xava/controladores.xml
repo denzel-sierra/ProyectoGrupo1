@@ -38,5 +38,21 @@ https://github.com/openxava/openxava/blob/master/openxavatest/src/main/resources
                 icono="content-save" atajo-de-teclado="Control S"
                 clase="ujcv.edu.hn.ProyectoGrupo1.acciones.GuardarPrecioBase"/>
     </controlador>
+
+    <controlador nombre="Descuento">
+        <hereda-de controlador="Typical"/>
+        <accion nombre="save" modo="detail" por-defecto="si-posible"
+                icono="content-save" atajo-de-teclado="Control S"
+                clase="ujcv.edu.hn.ProyectoGrupo1.acciones.AutorizarDescuento"/>
+    </controlador>
+
+    <controlador nombre="Lote">
+        <hereda-de controlador="Typical"/>
+        <accion nombre="calcularCostoProrrateado"
+                etiqueta="Calcular costo prorrateado"
+                modo="detail"
+                icono="calculator"
+                clase="ujcv.edu.hn.ProyectoGrupo1.acciones.CalcularCostoProrrateadoAction"/>
+    </controlador>
     
 </controladores>

@@ -60,7 +60,7 @@ public class Lote {
     BigDecimal costoTotal;
 
     // Pantalla E-10: Observaciones (Opcional, área de texto 500)
-    @Column(length = 500, columnDefinition = "TEXT")
+    @Column(length = 500)
     @Stereotype("MEMO")
     String observaciones;
 
