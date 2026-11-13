@@ -24,7 +24,8 @@ public class RolesModulesHelperProvider extends ModulesHelperProvider {
             Map.entry("Bitacora", "accesoBitacora"),
             Map.entry("PrecioBase", "accesoPrecios"),
             Map.entry("Descuento", "accesoVentas"),
-            Map.entry("Factura", "accesoVentas")
+            Map.entry("Factura", "accesoVentas"),
+            Map.entry("ConsultaAutoparte", "accesoVentas")
     );
 
     @Override
