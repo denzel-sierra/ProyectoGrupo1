@@ -24,7 +24,7 @@ import lombok.*;
 @RemoveValidator(ujcv.edu.hn.ProyectoGrupo1.validadores.ValidadorBorradoFactura.class)
 
 @View(members =
-        "Datos Fiscales [" +
+        "DatosFiscales [" +
                 "   cai;" +
                 "   rangoSar;" +
                 "   fechaLimiteEmision" +
@@ -38,7 +38,7 @@ import lombok.*;
                 "   cliente;" +
                 "   rtnCliente, tipoCliente" +
                 "];" +
-                "Detalle de la Factura [" +
+                "DetalleDeLaFactura [" +
                 "   autopartes" +
                 "];" +
                 "Pagos [" +

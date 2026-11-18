@@ -55,4 +55,12 @@ https://github.com/openxava/openxava/blob/master/openxavatest/src/main/resources
                 clase="ujcv.edu.hn.ProyectoGrupo1.acciones.CalcularCostoProrrateadoAction"/>
     </controlador>
     
+    <controlador nombre="Factura">
+        <hereda-de controlador="Typical"/>
+        <accion nombre="emitir" etiqueta="Emitir" modo="detail" icono="check-circle"
+                clase="ujcv.edu.hn.ProyectoGrupo1.acciones.EmitirFacturaAction"/>
+        <accion nombre="anular" etiqueta="Anular" modo="detail" icono="cancel"
+                clase="ujcv.edu.hn.ProyectoGrupo1.acciones.AnularFacturaAction"/>
+    </controlador>
+
 </controladores>

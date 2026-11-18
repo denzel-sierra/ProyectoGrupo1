@@ -136,6 +136,30 @@ public class Autoparte {
         return tienePrecio() ? "" : "Sin precio asignado: consulte al administrador";
     }
 
+    // HU-12 CA-02 / RN-04: hasta cuando cubre la garantia de una pieza vendida
+    @Hidden
+    public LocalDateTime getGarantiaHasta() {
+        if (estado != EstadoAutoparte.Vendida || fechaVenta == null || categoria == null) return null;
+        int horas = categoria.getHorasGarantia();
+        return horas > 0 ? fechaVenta.plusHours(horas) : null;
+    }
+
+    @Hidden
+    public boolean isGarantiaVigente() {
+        LocalDateTime hasta = getGarantiaHasta();
+        return hasta != null && LocalDateTime.now().isBefore(hasta);
+    }
+
+    @Depends("estado, fechaVenta, categoria")
+    public String getEstadoGarantia() {
+        if (estado != EstadoAutoparte.Vendida) return "";
+        if (fechaVenta == null) return "Sin fecha de venta";
+        LocalDateTime hasta = getGarantiaHasta();
+        if (hasta == null) return "Sin garantia";
+        String f = hasta.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+        return isGarantiaVigente() ? "VIGENTE hasta " + f : "Vencida el " + f;
+    }
+
     private boolean tienePrecio() {
         return precioBase != null && precioBase.compareTo(BigDecimal.ZERO) > 0;
     }
