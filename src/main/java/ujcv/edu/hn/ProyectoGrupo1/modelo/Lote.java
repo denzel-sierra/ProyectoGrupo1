@@ -17,18 +17,18 @@ import org.openxava.annotations.*;
 @Table(name = "lotes")
 @View(members =
         "DatosDelLote [" +
-                "   codigo, fechaAdquisicion;" +
-                "   subastaOrigen, costoTotal;" +
-                "   observaciones" +
+                "       codigo, vin, fechaAdquisicion;" +
+                "       subastaOrigen, costoTotal;" +
+                "       observaciones" +
                 "];" +
                 "AutopartesVinculadas [" +
-                "   autopartes" +
+                "       autopartes" +
                 "];" +
                 "ResumenDeRentabilidad [" +
-                "   ingresosGenerados, margenNeto, inventarioPendiente" +
+                "       ingresosGenerados, margenNeto, inventarioPendiente" +
                 "]"
 )
-@Tab(properties = "codigo, fechaAdquisicion, subastaOrigen, costoTotal, ingresosGenerados, margenNeto, inventarioPendiente")
+@Tab(properties = "codigo, vin, fechaAdquisicion, subastaOrigen, costoTotal, ingresosGenerados, margenNeto, inventarioPendiente")
 public class Lote {
 
     @Id
@@ -40,6 +40,12 @@ public class Lote {
     @Column(length = 50, nullable = false, unique = true)
     @Required(message = "El codigo de lote ya existe o es obligatorio")
     String codigo;
+
+    // Módulo 3 / HU-07: VIN del vehículo importado (validación de formato de 17 caracteres alfanuméricos)
+    @Column(length = 17)
+    @DisplaySize(17)
+    @Pattern(regexp = "^$|^[A-Za-z0-9]{17}$", message = "El VIN debe tener exactamente 17 caracteres alfanumericos")
+    String vin;
 
     // Pantalla E-10: Fecha de adquisición (Obligatorio, no puede ser futura)
     @Column(name = "fecha_adquisicion", nullable = false)
@@ -69,6 +75,17 @@ public class Lote {
     @ListProperties("sku, descripcion, marca, modelo, anio, categoria.nombre, condicion, estado, costoProrrateado, precioBase")
     @ListAction("Lote.calcularCostoProrrateado")
     Collection<Autoparte> autopartes;
+
+    @PrePersist
+    @PreUpdate
+    void normalizarVin() {
+        if (vin != null) {
+            vin = vin.trim().toUpperCase();
+            if (vin.isEmpty()) {
+                vin = null;
+            }
+        }
+    }
 
     // --- Propiedades calculadas para Trazabilidad y Rentabilidad (HU-07 / HU-17 / S-03) ---
 
